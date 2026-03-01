@@ -19,6 +19,6 @@ export const createNewListingRoute = {
             [insertedId]
         );
 
-        return h.response(rows).code(201);
+        return h.response(rows[0]).code(201);
     }
 }

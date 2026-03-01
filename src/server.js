@@ -1,6 +1,14 @@
 import Hapi from '@hapi/hapi';
 import routes from './routes';
-import { db } from './database';
+import * as admin from 'firebase-admin'
+
+
+var serviceAccount = require(".././firebase-admin-credentials.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
 
 let server;
 
@@ -8,6 +16,12 @@ const start = async () => {
     server = Hapi.server({
         port: 8000,
         host: 'localhost',
+        routes: {
+            cors: {
+                origin: ['http://localhost:4200'], // allow Angular
+                credentials: false // true only if you use cookies/auth sessions
+            }
+        }
     });
 
     routes.forEach(route => server.route(route));
